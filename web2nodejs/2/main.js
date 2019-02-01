@@ -1,35 +1,9 @@
 var http = require('http');
 var fs = require('fs');
-const url = require('url');
+var url = require('url');
 var qs = require('querystring');
-
-function templateHTML(title, list, body, control) {
-    return `
-                <!doctype html>
-                <html>
-                <head>
-                    <title>WEB1 - ${title}</title>
-                    <meta charset="utf-8">
-                </head>
-                <body>
-                    <h1><a href="/">WEB</a></h1>
-                    ${list}
-                    ${control}
-                    ${body}
-                </body>
-                </html>
-                `;
-}
-
-function templateList(filelist) {
-    var list = "<ul>";
-    filelist.forEach(function (file, index) {
-        list += `<li><a href="/?id=${file}">${file}</a></li>`
-    })
-    list += "</ul>";
-    return list
-}
-
+var path = require('path');
+var template = require('./lib/fileTemplate');
 
 var app = http.createServer(function (request, response) {
     var _url = request.url;
@@ -41,20 +15,22 @@ var app = http.createServer(function (request, response) {
             var title = 'welcome';
             var description = 'Hello, Node.js';
             fs.readdir('./data', function (err, filelist) {
-                var list = templateList(filelist);
-                var template = templateHTML(title, list,
+                var list = template.list(filelist);
+                var html = template.HTML(title, list,
                     ` <h2>${title}</h2><p>${description}</p>`,
                     `<a href="/create">create</a>`
                 )
                 response.writeHead(200, { 'Content-Type': 'text/html;charset=utf-8' });
-                response.end(template);
+                response.end(html);
             })
         } else {
-            fs.readFile(`data/${queryData.id}`, 'utf8', function (err, description) {
+            var filterd = path.parse(queryData.id).base;
+
+            fs.readFile(`data/${filterd}`, 'utf8', function (err, description) {
                 var title = queryData.id;
                 fs.readdir('./data', function (err, filelist) {
-                    var list = templateList(filelist);
-                    var template = templateHTML(title, list, `<h2>${title}</h2><p>${description}</p>`,
+                    var list = template.list(filelist);
+                    var html = template.HTML(title, list, `<h2>${title}</h2><p>${description}</p>`,
                         `
                         <a href="/create">create</a>
                         <a href="/update?id=${title}">update</a>
@@ -65,15 +41,15 @@ var app = http.createServer(function (request, response) {
                         `
                     )
                     response.writeHead(200, { 'Content-Type': 'text/html;charset=utf-8' });
-                    response.end(template);
+                    response.end(html);
                 })
             })
         }
     } else if (pathname === "/create") {
         var title = 'WEB - create';
         fs.readdir('./data', function (err, filelist) {
-            var list = templateList(filelist);
-            var template = templateHTML(title, list, `
+            var list = template.list(filelist);
+            var html = template.HTML(title, list, `
             <form method="post" action="/create_process">
                 <p>
                     <input type="text" name="title" placeholder="title">
@@ -88,7 +64,7 @@ var app = http.createServer(function (request, response) {
             </form>
             `, '')
             response.writeHead(200, { 'Content-Type': 'text/html;charset=utf-8' });
-            response.end(template);
+            response.end(html);
         })
     } else if (pathname === "/create_process") {
         var body = "";
@@ -99,20 +75,22 @@ var app = http.createServer(function (request, response) {
             var post = qs.parse(body);
             var title = post.title;
             var description = post.description;
-            fs.writeFile(`data/${title}`, `${description}`, 'utf8', function (err) {
+            var filterd = path.parse(title).base;
+            fs.writeFile(`data/${filterd}`, `${description}`, 'utf8', function (err) {
                 console.log(err)
                 response.writeHead(302, {
-                    'Location': `/?id=${title}`
+                    'Location': `/?id=${filterd}`
                 });
                 response.end();
             })
         })
     } else if (pathname === "/update") {
-        fs.readFile(`data/${queryData.id}`, 'utf8', function (err, description) {
+        var filterd = path.parse(queryData.id).base;
+        fs.readFile(`data/${filterd}`, 'utf8', function (err, description) {
             fs.readdir('./data', function (err, filelist) {
                 var title = queryData.id;
-                var list = templateList(filelist);
-                var template = templateHTML(title, list,
+                var list = template.list(filelist);
+                var html = template.HTML(title, list,
                     `
                     <form method="post" action="/update_process">
                      <input type="hidden" name="id" value="${title}">
@@ -131,7 +109,7 @@ var app = http.createServer(function (request, response) {
                     `<a href="/create">create</a> <a href="/update?id=${title}">update</a>`
                 )
                 response.writeHead(200, { 'Content-Type': 'text/html;charset=utf-8' });
-                response.end(template);
+                response.end(html);
             })
         })
     } else if (pathname === "/update_process") {
@@ -144,8 +122,8 @@ var app = http.createServer(function (request, response) {
             var id = post.id;
             var title = post.title;
             var description = post.description;
-
-            fs.rename(`data/${id}`, `data/${title}`, function (err) {
+            var filterd = path.parse(id).base;
+            fs.rename(`data/${filterd}`, `data/${title}`, function (err) {
                 fs.writeFile(`data/${title}`, `${description}`, 'utf8', function (err) {
                     console.log(err)
                     response.writeHead(302, {
@@ -164,7 +142,8 @@ var app = http.createServer(function (request, response) {
         request.on('end', function () {
             var post = qs.parse(body);
             var id = post.id;
-            fs.unlink(`data/${id}`, function (err) {
+            var filterd = path.parse(id).base;
+            fs.unlink(`data/${filterd}`, function (err) {
                 response.writeHead(302, {
                     'Location': `/`
                 });
