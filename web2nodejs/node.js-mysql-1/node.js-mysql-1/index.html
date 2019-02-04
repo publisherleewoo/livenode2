@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="Generator" content="EditPlus��">
+    <meta name="Author" content="">
+    <meta name="Keywords" content="">
+    <meta name="Description" content="">
+    <title>Document</title>
+
+</head>
+
+<body>
+
+    <button onClick="getUnclearedCashForDate()">abc</button>
+    <script>
+        function getUnclearedCashForDate() {
+
+            //AJAX REQ
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    debugger;
+                    return this.responseText;
+                }
+            }
+            xmlhttp.open("GET", "http://localhost:3000");
+            xmlhttp.send();
+
+        }
+    </script>
+</body>
+
+</html>
