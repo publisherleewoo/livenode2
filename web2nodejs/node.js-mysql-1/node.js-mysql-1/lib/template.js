@@ -9,6 +9,7 @@ module.exports = {
     </head>
     <body>
       <h1><a href="/">WEB</a></h1>
+      <a href="/author">author</a>
       ${list}
       ${control}
       ${body}
@@ -25,5 +26,62 @@ module.exports = {
         }
         list = list + '</ul>';
         return list;
+    },
+    authorSelect: function (authors, author_id) {
+        var tag = '';
+        var i = 0;
+        while (i < authors.length) {
+            var selected = '';
+            if (authors[i].id === author_id) {
+                selected = 'selected';
+            }
+            tag += `<option value="${authors[i].id}" ${selected}>${authors[i].name}</option>`
+            i++;
+        }
+        return `
+                <select name="author">
+                    ${tag}
+                </select>
+                `
+    },
+    authorList: function (authors) {
+        var i = 0;
+        var authorTr = ''
+        while (i < authors.length) {
+            authorTr += `<tr>
+                                <td>${authors[i].name}</td>    
+                                <td>${authors[i].profile}</td>    
+                                <td>
+                                    <form method="post" action="/author/update">
+                                        <input type="hidden" name="id" value=${authors[i].id}>
+                                        <button type="submit">update</button>
+                                    </form>
+                                </td>    
+                                <td>
+                                   <form method="post" action="/author/delete_process">
+                                        <input type="hidden" name="id" value=${authors[i].id}>
+                                      
+                                        <button type="submit">delete</button>
+                                          ${authors[i].id}
+                                    </form>
+                                </td>    
+                             </tr>
+                            `
+            i++;
+        }
+        return authorTr
+    },
+    authorTable: function (authorTr) {
+        return `
+            <table>
+                <tr>
+                    <th>name</th>
+                    <th>profile</th>
+                    <th>update</th>
+                    <th>delete</th>
+                </tr>
+                 ${authorTr}
+            </table>
+            `
     }
 }
