@@ -2,7 +2,20 @@ var express = require('express');
 var app = express();
 var pool = require('./db/db_config');
 var bodyParser = require('body-parser');
-var css = require('./middleware/css')
+var path = require('path')
+var fs = require('fs')
+
+var css = []
+
+app.get('*', (req, res, next) => {
+    fs.readdir(path.join(__dirname, 'public'), (err, files) => {
+        if (err) {
+            throw err
+        }
+        css = files;
+        next();
+    })
+})
 
 app.use(bodyParser.urlencoded({ extended: false }))
 
@@ -21,9 +34,10 @@ app.get('/', (req, res) => {
 
 app.get('/page/:id', (req, res) => {
     pool.query('SELECT * FROM page', function (error, results, fields) {
-        pool.query(`SELECT * FROM page WHERE pk=${req.params.id}`, function (error, result, fields) {
+        pool.query(`SELECT * FROM page WHERE pk=?`, [req.params.id], function (error, result, fields) {
             if (error) throw error;
             var result = result[0]
+            console.log(result)
             res.render('detail', { title: result.title, css: css, lists: results, target: result })
         });
     })
@@ -42,9 +56,39 @@ app.post('/create_process', (req, res) => {
     })
 })
 
+app.get('/update/:id', (req, res) => {
+    pool.query(`SELECT * FROM page where pk =?`, [req.params.id], (error, result, fields) => {
+        if (error) {
+            throw error
+        }
+        res.render('update', { title: 'update', css: css, target: result[0] })
+    })
+})
 
-/* update delete 남음 */
+app.post('/update_process', (req, res) => {
+    var title = req.body.title;
+    var description = req.body.description;
+    var pk = req.body.pk;
 
+    pool.query(`UPDATE page  SET title=?, description=? where pk = ?`, [title, description, pk], function (error, result, fields) {
+        if (error) {
+            throw error
+        }
+        res.redirect(`/page/${pk}`)
+    })
+})
+
+app.post('/delete_process', (req, res) => {
+    var pk = req.body.pk;
+    console.log(pk)
+    pool.query(`DELETE FROM page where pk = ?`, [pk], function (error, result, fields) {
+        if (error) {
+            throw error
+        }
+        console.log(result)
+        res.redirect(`/`)
+    })
+})
 
 app.listen(port, function (req, res) {
     console.log(`http://localhost:${port}`)

@@ -1,6 +1,10 @@
+body{padding:30px;}
 label{position:absolute; left:-9999px;}
 
 ul{margin-bottom:50px;}
-
+ul a{text-decoration: underline}
 h1{ margin-bottom:20px;}
+h2{margin:20px 0;}
 .title:hover{text-decoration: underline}
+form{display:inline-block}
+.btn{border:1px solid black; padding:3px 10px; background:gray; color:black;}

@@ -1,0 +1,14 @@
+<% include ./header/header %>
+
+<body>
+    <h1><%= title %></h1>
+
+    <form method="post" action="/update_process">
+        <label for="title">title</label><input type="hidden" name="pk" value="<%= target.pk %>" >
+        <p><label for="title">title</label><input type="text" name="title" id="title" value="<%= target.title %>" placeholder="title"></p>
+        <p><label for="description">description</label><input type="description" name="description" id="description" value="<%= target.description %>" placeholder="description"></p>
+        <p><input type="submit" value="update"></p>
+    </form>
+</body>
+
+</html>

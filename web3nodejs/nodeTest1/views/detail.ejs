@@ -9,8 +9,20 @@
         <%}); %>
     </ul>
 
+    <a class="btn" href="/update/<%= target.pk %>">update</a>
+    
+
+    
+    <form action="/delete_process" method="post">
+        <input type="hidden" name="pk" value="<%= target.pk %>">
+        <input type="submit" value="delete" class="btn">
+    </form>
+    
+    <!--<a href="/delete/<%= target.pk %>">delete</a>
+    -->
+    <h2>description</h2>
     <% if (target) { %>
-        <%= target.description %>
+        <p><%= target.description %></p>
     <% } %>
    
 </body>
