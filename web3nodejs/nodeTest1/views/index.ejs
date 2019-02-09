@@ -1,0 +1,15 @@
+<% include ./header/header%>
+
+<body>
+    <h1><%= title %></h1>
+    <ul>
+        <% lists.forEach(function(list){%>
+            <li><a href="/page/<%= list.pk %>">
+            <%= list.title %></a></li>
+        <%}); %>
+    </ul>
+    <a href="/create">Create</a>
+
+</body>
+
+</html>
