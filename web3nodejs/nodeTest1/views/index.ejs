@@ -1,6 +1,16 @@
 <% include ./header/header%>
 
 <body>
+
+<% if(logid){ %>
+<span><%= logid %>님 환영합니다</span>
+<a href="/login/logout_process">Logout</a>
+
+<% }else{ %>
+
+<a href="/login">Login</a>
+
+<% } %>
     <h1><%= title %></h1>
     <ul>
         <% lists.forEach(function(list){%>
