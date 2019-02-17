@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ko">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title><%= title %></title>
+  <link rel="stylesheet"  href="/css/main.css">
+  <link rel="stylesheet"  href="/css/sub.css">
+ </head>
+<body>
+<div id="wrap">
+ 
+    <form action="/board/add_process" method="post">
+    <table>
+        <caption>입력하기</caption>
+    <tr>
+        <th><label for="title">제목</label></th>
+        <td><input type="text" id="title" name="title" placeholder="제목" 
+        ></td>
+    </tr>
+    <tr>
+        <th><label for="dec">내용</label></th>
+        <td><input type="text" id="dec" name="dec" placeholder="내용" ></td>
+    </tr>
+    </table>
+        <input id="write" type="submit" value="글쓰기" >
+    </form>
+       
+</div>
+ </body>
+</html>

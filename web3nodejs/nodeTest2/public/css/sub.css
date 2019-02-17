@@ -1,0 +1,4 @@
+th:nth-of-type(1){width:20%;}
+td:nth-of-type(1){width:80%; text-align:left;}
+input#write{float:none; display: block; margin:0 auto;}
+#removeBtn{display: block; margin:0 auto;}

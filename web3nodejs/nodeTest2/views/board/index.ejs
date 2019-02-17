@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ko">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title></title>
+  <link rel="stylesheet"  href="/css/main.css">
+ </head>
+<body>
+<div id="wrap">
+    <table>
+        <caption>테이블</caption>
+    <tr>
+        <th>no</th>
+        <th>title</th>
+        <th>time</th>
+    </tr>
+    <% boardList.forEach(function(val,i){ %>
+    <tr>
+        <td><%= i+1 %></td>
+        <td><a href="/board/<%= val.pk %>"><%= val.title %></a>%></td>
+        <td><%= val.regDate %></td>
+    </tr>
+    <% }) %>
+    </table>
+    <a id="boardWrite" href="/board/add">
+        글쓰기
+    </a>
+
+</div>
+ </body>
+</html>

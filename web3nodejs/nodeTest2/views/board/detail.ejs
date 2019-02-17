@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ko">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title><%= title %></title>
+  <link rel="stylesheet"  href="/css/main.css">
+  <link rel="stylesheet"  href="/css/sub.css">
+ </head>
+<body>
+<div id="wrap">
+ 
+    <form action="/board/update_process" method="post">
+    <table>
+        <caption>입력하기</caption>
+    <tr>
+        <th><label for="title">제목</label></th>
+        <td>
+            <input type="text" id="title" name="title" placeholder="제목"  value="<%= boardList.title %>">
+        </td>
+    </tr>
+    <tr>
+        <th><label for="dec">내용</label></th>
+        <td><input type="text" id="dec" name="dec" placeholder="내용"  value="<%= boardList.description %>"></td>
+    </tr>
+    </table>
+        <input type="hidden" name="pk" value="<%= boardList.pk %>" >
+        <input id="write" type="submit" value="업데이트" >
+    </form>
+        
+    <form  action="/board/delete_process" method="post">
+        <input type="hidden" name="pk" value="<%= boardList.pk %>" >
+        <input id="write" type="submit" value="제거" >
+    </form>
+</div>
+ </body>
+</html>

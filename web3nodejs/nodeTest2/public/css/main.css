@@ -1,0 +1,11 @@
+*{margin: 0;padding: 0;}
+div#wrap{width:1200px; margin:0 auto;}
+div#wrap:after{display:block;content:'';clear:both}
+table{border-collapse: collapse; width:100%;  min-width:360px; max-width:1200px; margin:10px 0}
+th,td{border:1px solid black;  padding:10px}
+td{text-align:center;} 
+td:nth-of-type(1){width:10%;}
+td:nth-of-type(2){width:80%}
+td:nth-of-type(3){width:10%}
+td a{display:block;}
+a#boardWrite{float:right;}
