@@ -8,11 +8,9 @@ router.get('/', async (req, res) => {
     res.render(`${boardUrl}index`, { title: 'loginPage', isLogin: isLogin })
 })
 
-
 router.get('/joinus', (req, res) => {
     res.render(`${boardUrl}joinus`, { title: 'joinus', isLogin: isLogin })
 })
-
 
 router.post('/joinus_process', (req, res) => {
     dbPool.query(`INSERT INTO userinfo (id,password,name) VALUES (?,?,?) `, [req.body.u_id, req.body.u_ps, req.body.u_name], (err, result, fields) => {
@@ -25,7 +23,6 @@ router.post('/joinus_process', (req, res) => {
         }
     })
 })
-
 
 router.post('/login_process', (req, res) => {
     var userID = req.body['user_ID'];
@@ -46,7 +43,6 @@ router.post('/login_process', (req, res) => {
         }
     })
 })
-
 
 router.get('/logout_process', (req, res) => {
     req.session.destroy((err) => {

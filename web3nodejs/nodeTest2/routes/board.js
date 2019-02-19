@@ -3,7 +3,6 @@ var router = express.Router();
 const dbPool = require('../db/db_config');
 var boardUrl = "board/"
 
-
 router.get('/', async (req, res) => {
     dbPool.query(`select * from page`, (err, results, fields) => {
         if (err) {
