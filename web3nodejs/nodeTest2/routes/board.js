@@ -10,12 +10,16 @@ router.get('/', async (req, res) => {
             console.error(err)
         }
         var boardList = results;
-        res.render(`${boardUrl}index`, { title: 'main', boardList: boardList })
+        res.render(`${boardUrl}index`, { title: 'main', boardList: boardList, userID: req.session.userID })
     })
 })
 
 router.get('/add', (req, res) => {
-    res.render(`${boardUrl}add`, { title: 'add' })
+    if (req.session.userID) {
+        res.render(`${boardUrl}add`, { title: 'add' })
+    } else {
+        res.redirect('/login')
+    }
 })
 
 router.post('/add_process', (req, res) => {
@@ -30,11 +34,15 @@ router.post('/add_process', (req, res) => {
 })
 
 router.get('/:id', (req, res) => {
-    var paramId = req.params.id;
-    dbPool.query('select * from page where pk=?', [paramId], function (err, result, fields) {
-        var boardList = result;
-        res.render(`${boardUrl}detail`, { title: 'detail', boardList: boardList[0] })
-    })
+    if (req.session.userID) {
+        var paramId = req.params.id;
+        dbPool.query('select * from page where pk=?', [paramId], function (err, result, fields) {
+            var boardList = result;
+            res.render(`${boardUrl}detail`, { title: 'detail', boardList: boardList[0] })
+        })
+    } else {
+        res.redirect('/login')
+    }
 })
 
 router.post('/update_process', (req, res) => {

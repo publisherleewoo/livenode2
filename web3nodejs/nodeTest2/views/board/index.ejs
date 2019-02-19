@@ -10,6 +10,12 @@
  </head>
 <body>
 <div id="wrap">
+<% if (userID) { %>
+<span> <%= userID %>님 안녕하십니까</span>
+<a href="/login/logout_process">로그아웃</a>
+<%} else{ %>
+<a href="/login">로그인</a>
+<% } %>
     <table>
         <caption>테이블</caption>
     <tr>
@@ -20,7 +26,13 @@
     <% boardList.forEach(function(val,i){ %>
     <tr>
         <td><%= i+1 %></td>
-        <td><a href="/board/<%= val.pk %>"><%= val.title %></a>%></td>
+        <td>    
+            <% if(userID) {%>
+             <a href="/board/<%= val.pk %>"><%= val.title %></a>
+           <%}else{%>
+             <a href="#" onClick="alert('로그인하세요')"><%= val.title %></a>
+           <%}%>
+        </td>
         <td><%= val.regDate %></td>
     </tr>
     <% }) %>

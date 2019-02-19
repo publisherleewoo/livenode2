@@ -20,11 +20,11 @@
     </tr>
     <tr>
         <th><label for="password">password</label></th>
-        <td><input type="password" id="password" name="u_ps" placeholder="password" ></td>
+        <td><input type="password" id="password" name="u_ps" placeholder="password"  required></td>
     </tr>
      <tr>
         <th><label for="name">name</label></th>
-        <td><input type="type" id="name" name="u_name" placeholder="name" ></td>
+        <td><input type="type" id="name" name="u_name" placeholder="name" required ></td>
     </tr>
     </table>
         <input id="join" type="submit" value="가입하기" >
@@ -33,19 +33,12 @@
 </div>
 
 <script>
-     var submitPrevent = function(value){
-            if(value){
-                document.forms[0].addEventListener('submit',function(e){
-                    return true;
-                });
-            }else{
- 
-                document.forms[0].addEventListener('submit',function(e){
-                    e.preventDefault();
-                });
-            }
-     }
-    submitPrevent(false)
+     
+     <% if(isLogin) { %>
+      alert('가입 되지 않았습니다')
+    <% } %>
+
+          
 
     document.querySelector('#idChk').addEventListener('click',function(e){
         e.preventDefault(false);
@@ -59,16 +52,11 @@
                 var reciveData = JSON.parse(this.responseText)
                     if(reciveData.code===00){
                         alert(reciveData.msg)
-                        <canvas id=""></canvas>
-                        submitPrevent(true)
                     }else if(reciveData.code===99){
-              
                         alert(reciveData.msg)
-                        submitPrevent(false)
-                    }else{
+                    }else{        
                         alert('다른값으로 체크해주세요')
                     }
-
                     }
                     };
                     xhttp.open("POST", "/login/joinus_process_confirm", true);
